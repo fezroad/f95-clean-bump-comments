@@ -17,7 +17,8 @@ function findAndRemoveComments() {
     const contentToDelete = {
         "+": "+",
         "+1": "+1",
-        "bump": "bump"
+        "bump": "bump",
+        "up": "up"
     }
     const thread = document.querySelector(".block-body.js-replyNewMessageContainer")
 
@@ -31,6 +32,8 @@ function findAndRemoveComments() {
                 let messageContent = message.querySelector(".message-body .bbWrapper")
                 if (messageContent != undefined) {
                     messageContent = messageContent.innerText.toLowerCase()
+                    messageContent = messageContent.replace(" ", "")
+                    messageContent = messageContent.replace("0", "")
                     if (contentToDelete[messageContent] != undefined) {
                         message.remove()
                     }
