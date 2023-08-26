@@ -44,9 +44,9 @@ function observerCallback(changes, observer) {
     const timeDiff = (nowTime - scriptStartTime)
 
     if (timeDiff >= 15000) {
-        observer.disconnect();
+        observer.disconnect()
     } else if (document.querySelector(".block-body.js-replyNewMessageContainer") != undefined) {
-        observer.disconnect();
+        observer.disconnect()
         findAndRemoveComments()
     }
 }
