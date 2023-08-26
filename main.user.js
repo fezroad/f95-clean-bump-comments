@@ -15,6 +15,7 @@ const scriptStartTime = (new Date()).getTime()
 
 function findAndRemoveComments() {
     const contentToDelete = {
+        "+": "+",
         "+1": "+1",
         "bump": "bump"
     }
