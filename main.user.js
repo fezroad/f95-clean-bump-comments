@@ -36,6 +36,10 @@ function findAndRemoveComments() {
                     messageContent = messageContent.replaceAll(" ", "")
                     messageContent = messageContent.replaceAll("0", "")
 
+                    if (messageContent.startsWith("++")) {
+                        messageContent = "+" + messageContent.replaceAll("+", "")
+                    }
+
                     if (contentToDelete[messageContent] != undefined) {
                         message.remove()
                     }
