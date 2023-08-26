@@ -33,8 +33,8 @@ function findAndRemoveComments() {
                 let messageContent = message.querySelector(".message-body .bbWrapper")
                 if (messageContent != undefined) {
                     messageContent = messageContent.innerText.toLowerCase()
-                    messageContent = messageContent.replace(" ", "")
-                    messageContent = messageContent.replace("0", "")
+                    messageContent = messageContent.replaceAll(" ", "")
+                    messageContent = messageContent.replaceAll("0", "")
 
                     if (contentToDelete[messageContent] != undefined) {
                         message.remove()
