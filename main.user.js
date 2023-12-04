@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         F95 clean bump comments
 // @namespace    https://github.com/fezroad
-// @version      0.1.5
+// @version      0.2.0
 // @description  It will remove comments that is used for bumping and leave the latest comment to see how recent thread was active.
 // @author       Fezroad
 // @match        https://f95zone.to/threads/*
@@ -14,36 +14,52 @@
 const scriptStartTime = (new Date()).getTime()
 
 function findAndRemoveComments() {
-    const contentToDelete = {
-        "+": "+",
-        "+1": "+1",
-        "1": "1",
-        "bump": "bump",
-        "up": "up"
-    }
     const thread = document.querySelector(".block-body.js-replyNewMessageContainer")
 
     if (thread != undefined) {
-        let messages = Array.from(thread.querySelectorAll(".message.message--post"))
+        const messages = Array.from(thread.querySelectorAll(".message.message--post"))
 
         if (messages.length > 1) {
-            messages = messages.slice(0, -1)
+            const lastMessage = messages.pop()
 
             for (const message of messages) {
                 let messageContent = message.querySelector(".message-body .bbWrapper")
                 if (messageContent != undefined) {
-                    messageContent = messageContent.innerText.toLowerCase()
-                    messageContent = messageContent.replaceAll(" ", "")
-                    messageContent = messageContent.replaceAll("0", "")
+                    let innerText
+                    if (messageContent.childNodes.length > 1) {
+                        for (let i = messageContent.childNodes.length - 1; i > 0; i--) {
+                            const childNode = messageContent.childNodes[i]
+                            if (childNode.nodeType === 3) {
+                                innerText = childNode.textContent
+                                break
+                            }
+                        }
 
-                    if (messageContent.startsWith("++")) {
-                        messageContent = "+" + messageContent.replaceAll("+", "")
+                        if (innerText == undefined) continue
+                    } else {
+                        innerText = messageContent.innerText
                     }
 
-                    if (contentToDelete[messageContent] != undefined) {
+                    innerText = innerText.toLowerCase()
+                    innerText = innerText.replaceAll(" ", "")
+                    innerText = innerText.replace(/[0-9]/g, "")
+                    innerText = innerText.replaceAll("bump", "")
+                    innerText = innerText.replaceAll("up", "")
+                    innerText = innerText.replaceAll("+", "")
+                    innerText = innerText.replaceAll("!", "")
+
+                    if (innerText === "") {
                         message.remove()
                     }
                 }
+            }
+
+            if (lastMessage != undefined) {
+                setTimeout(() => {
+                    lastMessage.setAttribute('tabindex', '-1')
+                    lastMessage.focus()
+                    lastMessage.removeAttribute('tabindex')
+                }, 500)
             }
         }
     }
@@ -61,4 +77,4 @@ function observerCallback(changes, observer) {
     }
 }
 
-(new MutationObserver(observerCallback)).observe(document, {childList: true, subtree: true});
+(new MutationObserver(observerCallback)).observe(document, { childList: true, subtree: true })
