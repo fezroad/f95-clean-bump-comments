@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         F95 clean bump comments
 // @namespace    https://github.com/fezroad
-// @version      0.2.0
+// @version      0.2.1
 // @description  It will remove comments that is used for bumping and leave the latest comment to see how recent thread was active.
 // @author       Fezroad
 // @match        https://f95zone.to/threads/*
@@ -15,8 +15,20 @@ const scriptStartTime = (new Date()).getTime()
 
 function findAndRemoveComments() {
     const thread = document.querySelector(".block-body.js-replyNewMessageContainer")
+    const threadLabels = document.querySelectorAll(".p-title-value a.labelLink")
 
     if (thread != undefined) {
+        if (threadLabels.length > 0) {
+            let isVamThread = false
+            for (const label of threadLabels) {
+                if (label.innerText.toLowerCase() === "vam") {
+                    isVamThread = true
+                    break
+                }
+            }
+            if (!isVamThread) return undefined
+        }
+
         const messages = Array.from(thread.querySelectorAll(".message.message--post"))
 
         if (messages.length > 1) {
@@ -45,6 +57,7 @@ function findAndRemoveComments() {
                     innerText = innerText.replace(/[0-9]/g, "")
                     innerText = innerText.replaceAll("bump", "")
                     innerText = innerText.replaceAll("up", "")
+                    innerText = innerText.replaceAll("down", "")
                     innerText = innerText.replaceAll("+", "")
                     innerText = innerText.replaceAll("!", "")
 
