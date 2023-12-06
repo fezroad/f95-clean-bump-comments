@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         F95 clean bump comments
 // @namespace    https://github.com/fezroad
-// @version      0.2.1
+// @version      0.2.2
 // @description  It will remove comments that is used for bumping and leave the latest comment to see how recent thread was active.
 // @author       Fezroad
 // @match        https://f95zone.to/threads/*
@@ -18,6 +18,7 @@ function findAndRemoveComments() {
     const threadLabels = document.querySelectorAll(".p-title-value a.labelLink")
 
     if (thread != undefined) {
+        /*
         if (threadLabels.length > 0) {
             let isVamThread = false
             for (const label of threadLabels) {
@@ -28,6 +29,7 @@ function findAndRemoveComments() {
             }
             if (!isVamThread) return undefined
         }
+        */
 
         const messages = Array.from(thread.querySelectorAll(".message.message--post"))
 
@@ -66,7 +68,7 @@ function findAndRemoveComments() {
                     }
                 }
             }
-
+            /*
             if (lastMessage != undefined) {
                 setTimeout(() => {
                     lastMessage.setAttribute('tabindex', '-1')
@@ -74,6 +76,7 @@ function findAndRemoveComments() {
                     lastMessage.removeAttribute('tabindex')
                 }, 500)
             }
+            */
         }
     }
 }
