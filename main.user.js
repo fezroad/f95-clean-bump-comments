@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         F95 clean bump comments
 // @namespace    https://github.com/fezroad
-// @version      0.2.4
+// @version      0.2.5
 // @description  It will remove comments that is used for bumping and leave the latest comment to see how recent thread was active.
 // @author       Fezroad
 // @match        https://f95zone.to/threads/*
@@ -37,6 +37,14 @@ function findAndRemoveComments() {
             const lastMessage = messages.pop()
 
             for (const message of messages) {
+                const messageHeader = message.querySelector(".message-attribution-opposite.message-attribution-opposite--list")
+                if (messageHeader.children.length > 2) {
+                    const messageNumber = messageHeader.children[2]?.firstElementChild?.innerText?.trim()
+                    if (messageNumber != undefined && messageNumber === "#1") {
+                        continue
+                    }
+                }
+
                 let messageContent = message.querySelector(".message-body .bbWrapper")
                 if (messageContent != undefined) {
                     let innerText
