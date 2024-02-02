@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         F95 clean bump comments
 // @namespace    https://github.com/fezroad
-// @version      0.2.5
+// @version      0.2.6
 // @description  It will remove comments that is used for bumping and leave the latest comment to see how recent thread was active.
 // @author       Fezroad
 // @match        https://f95zone.to/threads/*
@@ -63,6 +63,10 @@ function findAndRemoveComments() {
                     }
 
                     innerText = innerText.toLowerCase()
+                    innerText = innerText.replace(/\?/g, "")
+                    innerText = innerText.replace(/\./g, "")
+                    innerText = innerText.replaceAll("again", "")
+                    innerText = innerText.replaceAll("bumping", "")
                     innerText = innerText.replaceAll("bump", "")
                     innerText = innerText.replaceAll("bomp", "")
                     innerText = innerText.replaceAll("b0mp", "")
